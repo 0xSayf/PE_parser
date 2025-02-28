@@ -1,6 +1,6 @@
 CC = gcc
 SRCS = dos_header.c machine_type.c pe_file_main.c parse32.c parse64.c header_file.c \
-optional_header32.c
+optional_header32.c optional_header64.c
 OBJ = $(SRCS:.c=.o)
 NAME = pe_parser.exe
 

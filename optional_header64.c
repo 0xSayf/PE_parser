@@ -1,15 +1,15 @@
 #include "includes/pe_file.h"
 #include <stdlib.h>
 
-void    parse_optional_header32(FILE  *file,IMAGE_OPTIONAL_HEADER32 *opt, IMAGE_DOS_HEADER  *dos)
+void    parse_optional_header64(FILE  *file,IMAGE_OPTIONAL_HEADER64 *opt, IMAGE_DOS_HEADER  *dos)
 {
     LONG    offset;
     DWORD   value;
 
     offset = dos->e_lfanew + 24;
-    opt = malloc(sizeof(IMAGE_OPTIONAL_HEADER32));
+    opt = malloc(sizeof(IMAGE_OPTIONAL_HEADER64));
     fseek(file, offset, SEEK_SET);
-    fread(opt,sizeof(IMAGE_OPTIONAL_HEADER32), 1,file);
+    fread(opt,sizeof(IMAGE_OPTIONAL_HEADER64), 1,file);
 
     printf("    .Optional_header :\n");
     printf("        .Magic                      = %X\n",opt->Magic);
@@ -20,7 +20,6 @@ void    parse_optional_header32(FILE  *file,IMAGE_OPTIONAL_HEADER32 *opt, IMAGE_
     printf("        .SizeOfUninitializedData    = %X\n",opt->SizeOfUninitializedData);
     printf("        .AddressOfEntryPoint        = %X\n",opt->AddressOfEntryPoint);
     printf("        .BaseOfCode                 = %X\n",opt->BaseOfCode);
-    printf("        .BaseOfData                 = %X\n",opt->BaseOfData);
     printf("        .ImageBase                  = %X\n",opt->ImageBase);
     printf("        .SectionAlignment           = %X\n",opt->SectionAlignment);
     printf("        .FileAlignment              = %X\n",opt->FileAlignment);
