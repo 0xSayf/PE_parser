@@ -1,12 +1,13 @@
-#include "includes/pe_file.h"
+#include "../includes/pe_file.h"
 #include <stdlib.h>
-void    parse64(FILE    *file)
+
+void    parse32(FILE    *file)
 {
     IMAGE_DOS_HEADER    *dos;
-    IMAGE_NT_HEADERS64  *nt;
+    IMAGE_NT_HEADERS32  *nt;
     DWORD               value;
 
-    nt = malloc(sizeof(IMAGE_NT_HEADERS64));
+    nt = malloc(sizeof(IMAGE_NT_HEADERS32));
     dos = malloc(sizeof(IMAGE_DOS_HEADER));
     fseek(file, dos->e_lfanew, SEEK_SET);
     fread(&value,sizeof(DWORD), 1, file);
@@ -21,7 +22,7 @@ void    parse64(FILE    *file)
         (char)((nt->Signature >> 24) & 0xFF));
     
     parse_header_file(file,&nt->FileHeader,dos);
-    parse_optional_header64(file,&nt->OptionalHeader,dos);
+    parse_optional_header32(file,&nt->OptionalHeader,dos);
     free(nt);
     free(dos);
 }
