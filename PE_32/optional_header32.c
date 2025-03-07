@@ -1,12 +1,15 @@
 #include "../includes/pe_file.h"
 #include <stdlib.h>
 
-void    parse_optional_header32(FILE  *file,IMAGE_OPTIONAL_HEADER32 *opt, IMAGE_DOS_HEADER  *dos)
+void    parse_optional_header32(FILE  *file,IMAGE_OPTIONAL_HEADER32 *opt)
 {
     LONG    offset;
     DWORD   value;
+    long    NT;
 
-    offset = dos->e_lfanew + 24;
+    fseek(file,0x3c, SEEK_SET);
+    fread(&NT,sizeof(long),1,file);
+    offset = NT + 24;
     opt = malloc(sizeof(IMAGE_OPTIONAL_HEADER32));
     fseek(file, offset, SEEK_SET);
     fread(opt,sizeof(IMAGE_OPTIONAL_HEADER32), 1,file);

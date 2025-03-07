@@ -1,12 +1,15 @@
 #include "includes/pe_file.h"
 #include <stdlib.h>
 
-void    parse_header_file(FILE  *file,IMAGE_FILE_HEADER   *hd_fl, IMAGE_DOS_HEADER  *dos)
+void    parse_header_file(FILE  *file,IMAGE_FILE_HEADER   *hd_fl)
 {
     WORD                 value;
     LONG                 offset;
+    long                 NT;
 
-    offset = sizeof(DWORD) + dos->e_lfanew;
+    fseek(file,0x3c, SEEK_SET);
+    fread(&NT,sizeof(long),1,file);
+    offset = sizeof(DWORD) + NT;
     hd_fl = malloc(sizeof(IMAGE_FILE_HEADER));
     fseek(file,offset, SEEK_SET);
     fread(hd_fl,sizeof(IMAGE_FILE_HEADER),1,file);
