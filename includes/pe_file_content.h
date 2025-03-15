@@ -37,7 +37,8 @@ typedef struct _IMAGE_DOS_HEADER
     LONG   e_lfanew;                    
 } IMAGE_DOS_HEADER, *PIMAGE_DOS_HEADER;
 
-typedef struct _IMAGE_FILE_HEADER {
+typedef struct _IMAGE_FILE_HEADER 
+{
     WORD    Machine;
     WORD    NumberOfSections;
     DWORD   TimeDateStamp;
@@ -47,12 +48,14 @@ typedef struct _IMAGE_FILE_HEADER {
     WORD    Characteristics;
 } IMAGE_FILE_HEADER, *PIMAGE_FILE_HEADER;
 
-typedef struct _IMAGE_DATA_DIRECTORY {
+typedef struct _IMAGE_DATA_DIRECTORY 
+{
   DWORD   VirtualAddress;
   DWORD   Size;
 } IMAGE_DATA_DIRECTORY, *PIMAGE_DATA_DIRECTORY;
 
-typedef struct _IMAGE_OPTIONAL_HEADER64 {
+typedef struct _IMAGE_OPTIONAL_HEADER64 
+{
   WORD        Magic;
   BYTE        MajorLinkerVersion;
   BYTE        MinorLinkerVersion;
@@ -134,9 +137,11 @@ typedef struct _IMAGE_NT_HEADERS
     IMAGE_OPTIONAL_HEADER32 OptionalHeader;
 } IMAGE_NT_HEADERS32, *PIMAGE_NT_HEADERS32;
 
-typedef struct _IMAGE_SECTION_HEADER {
+typedef struct _IMAGE_SECTION_HEADER 
+{
   BYTE    Name[8];
-  union {
+  union 
+  {
           DWORD   PhysicalAddress;
           DWORD   VirtualSize;
   } Misc;
@@ -149,5 +154,32 @@ typedef struct _IMAGE_SECTION_HEADER {
   WORD    NumberOfLinenumbers;
   DWORD   Characteristics;
 } IMAGE_SECTION_HEADER, *PIMAGE_SECTION_HEADER;
+
+typedef union _IMAGE_THUNK_DATA 
+{
+  DWORD ForwarderString; 
+  DWORD Function;
+  DWORD Ordinal; 
+  DWORD AddressOfData;
+} IMAGE_THUNK_DATA;
+
+typedef struct _IMAGE_IMPORT_BY_NAME 
+{
+  WORD Hint;
+  BYTE Name[1];
+} IMAGE_IMPORT_BY_NAME;
+
+typedef struct _IMAGE_IMPORT_DESCRIPTOR 
+{
+  union 
+  {
+      DWORD Characteristics;
+      DWORD OriginalFirstThunk;
+  }ILT;
+  DWORD TimeDateStamp;
+  DWORD ForwarderChain;
+  DWORD Name;                  
+  DWORD FirstThunk;                    
+} IMAGE_IMPORT_DESCRIPTOR;
 
 #endif

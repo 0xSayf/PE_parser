@@ -22,7 +22,6 @@ void    perse_sections_header64(FILE    *file, int size_of_optional_header)
         fseek(file,offset, SEEK_SET);
         fread(sections,40,1,file);
         printf("   '*' %s:\n", sections->Name);
-        printf("        PhysicalAddress     : 0x%X\n",sections->Misc.PhysicalAddress);
 		printf("        VirtualSize         : 0x%X\n", sections->Misc.VirtualSize);
 		printf("        VirtualAddress      : 0x%X\n",sections->VirtualAddress);
 		printf("        SizeOfRawData       : 0x%X\n", sections->SizeOfRawData);
