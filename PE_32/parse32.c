@@ -25,5 +25,6 @@ void    parse32(FILE    *file)
     parse_header_file(file,&nt->FileHeader);
     parse_optional_header32(file,&nt->OptionalHeader);
     perse_sections_header32(file, sizeof(nt->OptionalHeader));
+    ft_parse_import32(file,sizeof(nt->OptionalHeader));
     free(nt);
 }

@@ -13,5 +13,6 @@ void    parse_optional_header32(FILE  *file,IMAGE_OPTIONAL_HEADER32 *opt);
 void    parse_optional_header64(FILE  *file,IMAGE_OPTIONAL_HEADER64 *opt);
 void    perse_sections_header32(FILE    *file, int size_of_optional_header);
 void    perse_sections_header64(FILE    *file, int size_of_optional_header);
+void    ft_parse_import32(FILE  *file,int size_of_optional_header);
 
 #endif
