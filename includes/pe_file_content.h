@@ -158,7 +158,7 @@ typedef struct _IMAGE_SECTION_HEADER
 typedef struct _IMAGE_IMPORT_BY_NAME 
 {
   WORD Hint;
-  BYTE Name[1];
+  BYTE Name[256];
 } IMAGE_IMPORT_BY_NAME;
 
 typedef struct  _IMAGE_ILT_CUST
