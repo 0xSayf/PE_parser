@@ -155,19 +155,21 @@ typedef struct _IMAGE_SECTION_HEADER
   DWORD   Characteristics;
 } IMAGE_SECTION_HEADER, *PIMAGE_SECTION_HEADER;
 
-typedef union _IMAGE_THUNK_DATA 
-{
-  DWORD ForwarderString; 
-  DWORD Function;
-  DWORD Ordinal; 
-  DWORD AddressOfData;
-} IMAGE_THUNK_DATA;
-
 typedef struct _IMAGE_IMPORT_BY_NAME 
 {
   WORD Hint;
   BYTE Name[1];
 } IMAGE_IMPORT_BY_NAME;
+
+typedef struct  _IMAGE_ILT_CUST
+{
+  union
+  {
+    DWORD flag : 1;
+    DWORD ordinal : 16;
+    DWORD RVA_by_NAME : 32;
+  } myaw;
+} ILT_CUST;
 
 typedef struct _IMAGE_IMPORT_DESCRIPTOR 
 {

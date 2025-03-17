@@ -9,7 +9,7 @@ int main (int ac, char **av)
     file = fopen(av[1], "rb");
     if(!file)
     {
-        printf("syntax : ./pe pe_file(.exe .dll ...)\n");
+        printf("syntax : pe_parser.exe pe_file(.exe .dll ...)\n");
         return 0;
     }
     machine = file_machine(file);

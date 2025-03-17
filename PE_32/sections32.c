@@ -30,5 +30,6 @@ void    perse_sections_header32(FILE    *file, int size_of_optional_header)
         offset = offset + 40;
         index++;
     }
+    printf("--------------------------------------\n\n");
     free(sections);
 }
