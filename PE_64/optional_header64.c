@@ -13,7 +13,6 @@ void    parse_optional_header64(FILE  *file,IMAGE_OPTIONAL_HEADER64 *opt)
     opt = malloc(sizeof(IMAGE_OPTIONAL_HEADER64));
     fseek(file, offset, SEEK_SET);
     fread(opt,sizeof(IMAGE_OPTIONAL_HEADER64), 1,file);
-
     printf("    .Optional_header :\n");
     printf("        .Magic                      = %X\n",opt->Magic);
     printf("        .MajorLinkerVersion         = %X\n",opt->MajorLinkerVersion);

@@ -24,5 +24,6 @@ void    parse64(FILE    *file)
     parse_header_file(file,&nt->FileHeader);
     parse_optional_header64(file,&nt->OptionalHeader);
     perse_sections_header64(file, sizeof(nt->OptionalHeader));
+    ft_parse_import64(file,sizeof(IMAGE_OPTIONAL_HEADER64));
     free(nt);
 }

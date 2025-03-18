@@ -161,7 +161,7 @@ typedef struct _IMAGE_IMPORT_BY_NAME
   BYTE Name[256];
 } IMAGE_IMPORT_BY_NAME;
 
-typedef struct  _IMAGE_ILT_CUST
+typedef struct  _IMAGE_ILT_CUST_32
 {
   union
   {
@@ -169,7 +169,17 @@ typedef struct  _IMAGE_ILT_CUST
     DWORD ordinal : 16;
     DWORD RVA_by_NAME : 32;
   } myaw;
-} ILT_CUST;
+} ILT_CUST_32;
+
+typedef struct  _IMAGE_ILT_CUST_64
+{
+  union
+  {
+    DWORD flag : 1;
+    DWORD ordinal : 16;
+    QWORD RVA_by_NAME : 64;
+  } myaw;
+} ILT_CUST_64;
 
 typedef struct _IMAGE_IMPORT_DESCRIPTOR 
 {

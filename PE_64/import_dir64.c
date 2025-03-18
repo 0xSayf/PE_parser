@@ -2,21 +2,23 @@
 #include <stdlib.h>
 #include <string.h>
 
-DWORD   ft_extract_the_RVA(FILE *file)
+DWORD   ft_extract_the_RVA_64(FILE *file)
 {
+    IMAGE_OPTIONAL_HEADER64 nt;
     long    NT;
     DWORD   offset;
     DWORD   RVA;
 
     fseek(file,0x3c, SEEK_SET);
     fread(&NT,sizeof(long), 1 ,file);
-    offset = NT + 128;
+    offset = NT + 24;
     fseek(file,offset,SEEK_SET);
-    fread(&RVA,sizeof(DWORD), 1 , file);
+    fread(&nt,sizeof(IMAGE_OPTIONAL_HEADER64), 1 ,file);
+    RVA = nt.DataDirectory[1].VirtualAddress;
     return RVA;
 }
 
-DWORD   calc_off(DWORD VA,FILE *file,int size_of_optional_header)
+DWORD   calc_off_64(DWORD VA,FILE *file,int size_of_optional_header)
 {
     IMAGE_SECTION_HEADER    *sections;
     long                    NT;
@@ -44,7 +46,7 @@ DWORD   calc_off(DWORD VA,FILE *file,int size_of_optional_header)
     return 0;
 }
 
-DWORD   ft_calc_the_offset_of_import(FILE *file,int   size_of_optional_header)
+DWORD   ft_calc_the_offset_of_import_64(FILE *file,int   size_of_optional_header)
 {
     IMAGE_SECTION_HEADER    *sections;
     long                    NT;
@@ -60,7 +62,7 @@ DWORD   ft_calc_the_offset_of_import(FILE *file,int   size_of_optional_header)
     fread(&numofsect,sizeof(WORD),1,file);
     offset = NT + 24 + size_of_optional_header;
     index = 0;
-    RVA = ft_extract_the_RVA(file);
+    RVA = ft_extract_the_RVA_64(file);
     while (index < numofsect)
     {
         fseek(file,offset, SEEK_SET);
@@ -73,10 +75,10 @@ DWORD   ft_calc_the_offset_of_import(FILE *file,int   size_of_optional_header)
     return 0;
 }
 
-void    ft_ILT_parse(FILE   *file, int size_of_optional_header , DWORD RVA_ILT)
+void    ft_ILT_parse_64(FILE   *file, int size_of_optional_header , DWORD RVA_ILT)
 {
     IMAGE_IMPORT_BY_NAME    ilt;
-    ILT_CUST_32                entry;
+    ILT_CUST_64              entry;
     BYTE                    flag;
     WORD                    ordinal;
     DWORD                   offset_ILT;
@@ -84,9 +86,9 @@ void    ft_ILT_parse(FILE   *file, int size_of_optional_header , DWORD RVA_ILT)
 
     while (1)
     {
-        offset = calc_off(RVA_ILT,file,size_of_optional_header);
+        offset = calc_off_64(RVA_ILT,file,size_of_optional_header);
         fseek(file , offset , SEEK_SET);
-        fread(&entry, sizeof(ILT_CUST_32), 1 , file);
+        fread(&entry, sizeof(ILT_CUST_64), 1 , file);
         ordinal = 0x00;
         offset_ILT = 0x00;
         flag = entry.myaw.flag;
@@ -98,7 +100,7 @@ void    ft_ILT_parse(FILE   *file, int size_of_optional_header , DWORD RVA_ILT)
             break;
         if(flag == 0x0)
         {
-            offset_ILT = calc_off(offset_ILT, file, size_of_optional_header);
+            offset_ILT = calc_off_64(offset_ILT, file, size_of_optional_header);
             fseek(file,offset_ILT,SEEK_SET);
             fread(&ilt,sizeof(IMAGE_IMPORT_BY_NAME),1,file);
             printf("      . Entry(funtion) :\n");
@@ -107,11 +109,11 @@ void    ft_ILT_parse(FILE   *file, int size_of_optional_header , DWORD RVA_ILT)
         }
         else if(flag == 0x01)
             printf ("Called by the ordinal : %d \n", ordinal);
-        RVA_ILT += sizeof(DWORD);
+        RVA_ILT += sizeof(QWORD);
     }        
 }
 
-void    ft_parse_import32(FILE  *file,int size_of_optional_header)
+void    ft_parse_import64(FILE  *file,int size_of_optional_header)
 {
     IMAGE_IMPORT_DESCRIPTOR tmp;
     char                    dll_name[256];
@@ -119,18 +121,19 @@ void    ft_parse_import32(FILE  *file,int size_of_optional_header)
     DWORD                   offset;
 
     printf("->ImportDirectory : \n\n");
-    offset = ft_calc_the_offset_of_import(file,size_of_optional_header);
+    offset = ft_calc_the_offset_of_import_64(file,size_of_optional_header);
+   
     while (1)
     {
         fseek(file,offset,SEEK_SET);
         fread(&tmp,sizeof(IMAGE_IMPORT_DESCRIPTOR), 1 , file);
         if(!tmp.Name)
             break;
-        hhh = calc_off(tmp.Name,file,size_of_optional_header);
+        hhh = calc_off_64(tmp.Name,file,size_of_optional_header);
         fseek(file,hhh,SEEK_SET);
         fread(dll_name,sizeof(char), sizeof(dll_name) , file);
         printf("    *. %s\n", dll_name);
-        ft_ILT_parse(file,size_of_optional_header,tmp.ILT.OriginalFirstThunk);
+        ft_ILT_parse_64(file,size_of_optional_header,tmp.ILT.OriginalFirstThunk);
         offset += sizeof(tmp);
     }
 }
