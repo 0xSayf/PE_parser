@@ -194,4 +194,10 @@ typedef struct _IMAGE_IMPORT_DESCRIPTOR
   DWORD FirstThunk;                    
 } IMAGE_IMPORT_DESCRIPTOR;
 
+typedef struct _IMAGE_BASE_RELOCATION {
+  DWORD   VirtualAddress;
+  DWORD   SizeOfBlock;
+} IMAGE_BASE_RELOCATION;
+
+
 #endif

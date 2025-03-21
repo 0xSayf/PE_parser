@@ -26,5 +26,6 @@ void    parse32(FILE    *file)
     parse_optional_header32(file,&nt->OptionalHeader);
     perse_sections_header32(file, sizeof(nt->OptionalHeader));
     ft_parse_import32(file,sizeof(nt->OptionalHeader));
+    ft_parse_the_basereloc32(file, sizeof(IMAGE_OPTIONAL_HEADER32));
     free(nt);
 }

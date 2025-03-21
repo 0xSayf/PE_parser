@@ -136,4 +136,5 @@ void    ft_parse_import64(FILE  *file,int size_of_optional_header)
         ft_ILT_parse_64(file,size_of_optional_header,tmp.ILT.OriginalFirstThunk);
         offset += sizeof(tmp);
     }
+    printf("---------------------------------------------------------------\n\n");
 }

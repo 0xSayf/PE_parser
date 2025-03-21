@@ -15,5 +15,7 @@ void    perse_sections_header32(FILE    *file, int size_of_optional_header);
 void    perse_sections_header64(FILE    *file, int size_of_optional_header);
 void    ft_parse_import32(FILE  *file,int size_of_optional_header);
 void    ft_parse_import64(FILE  *file,int size_of_optional_header);
+void    ft_parse_the_basereloc(FILE *file, int size_of_optional_header);
+void    ft_parse_the_basereloc32(FILE *file, int size_of_optional_header);
 
 #endif
