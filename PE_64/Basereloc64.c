@@ -59,13 +59,13 @@ void    ft_parse_the_basereloc(FILE *file, int size_of_optional_header)
 
     offset = ft_extract_offs_BR(file);
     offset = calc_offs_64(offset,file,size_of_optional_header);
+    printf("->BaseReloc (.reloc) : \n\n");
     while(1)
     {
         fseek(file,offset,SEEK_SET);
         fread(&tmp, sizeof(IMAGE_BASE_RELOCATION), 1, file);
         if(tmp.SizeOfBlock == 0x00)
             break;
-        printf("->BaseReloc (.reloc) : \n\n");
         printf("   *.VirtualAddress : %X\n", tmp.VirtualAddress);
         printf("    *.SizeOfBlock    : %X\n", tmp.SizeOfBlock);
         numofentry = (tmp.SizeOfBlock - sizeof(IMAGE_BASE_RELOCATION)) / sizeof(WORD);
